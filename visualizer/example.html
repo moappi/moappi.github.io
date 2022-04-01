@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.0/json2html.min.js"></script>
+
+    <!-- Visualizer Core -->
+    <link href="./css/visualizer.css" rel="stylesheet">
+    <script src="./lib/visualizer.js"></script>
+
+</head>
+
+<body>
+    <div id="output"></div>
+    
+    <script>
+    
+        var jsonDemo = {"header":{"version":"0.0.8","status":1,"message":""},"response":[{"product":"Classic Cars","count":38},{"product":"Motorcycles","count":13},{"product":"Planes","count":12},{"product":"Ships","count":9},{"product":"Trains","count":3},{"product":"Trucks and Buses","count":11},{"product":"Vintage Cars","count":24}]};
+        
+        $(function(){
+            
+        	//Create a new visualizer object
+        	var _visualizer = new visualizer($("#output"));
+        	
+        	//Visualize the demo json object
+        	_visualizer.visualize(jsonDemo);
+        
+        });
+    </script>
+</body>
+
+
+
+</html>

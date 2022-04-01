@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>json2html &bull; lightning fast HTML templating for node.js &amp; jquery</title>
+    
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Base Styling-->
+    <link href="/css/index.css" rel="stylesheet">
+    
+    <!-- Meta -->
+    <meta name="description" content="JSON2HTML is a lightning fast client side javascript HTML templating library for both jQuery and Node.js.">
+    <meta name="author" content="Chad Brown">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.0/json2html.min.js"></script>
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+
+    <link href="/js/prettify.css" rel="stylesheet">
+    <script src="/js/prettify.js"></script>
+    
+    <!-- Page Specific Styling-->
+    <link href="css/index.css" rel="stylesheet">
+    
+    <link href="/img/favicon.ico" rel="icon" type="image/ico">
+</head>
+
+<body>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="JSON2HTML">
+            <img src="/img/json2html-logo-white.png" style="width:36px;height:36px;"/>
+        </a>
+   
+        <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/started/">Get Started</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/docs/">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/examples/">Examples</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/builder/">Builder</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualizer/">Visualizer</a>
+              </li>
+            </ul>
+        </div>
+        
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item">
+              <a class="nav-link p-2" href="https://github.com/moappi/json2html" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36" focusable="false"><title>GitHub</title><path d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+              </a>
+            </li>
+        </ul>
+        
+        <a class="btn btn-bd-yellow d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/moappi/json2html/archive/master.zip">Download</a>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar d-none d-sm-block">
+           <nav id="bd-docs-nav" class="navbar flex-column">
+                <nav class="nav flex-column">
+                
+                    <a class="nav-link nav-link-header active" href="#main-overview">Overview</a>
+                    
+                    <a class="nav-link nav-link-header" href="#main-usage">Usage</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-usage-native">Native & Node.js</a>
+                        <a class="nav-link nav-link-item" href="#main-usage-jquery">jQuery</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#main-type">Template Types</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-type-dom">DOM Template</a>
+                        <a class="nav-link nav-link-item" href="#main-type-block">Block Template</a>
+                        <a class="nav-link nav-link-item" href="#main-type-component">Component</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#main-dom">DOM Template</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-dom-tag"><> attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-dom-text">text attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-dom-html">html attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-dom-obj">{} attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-dom-other">dom specific attributes</a>
+                        <a class="nav-link nav-link-item" href="#main-dom-events">events</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#main-assignment">Assignment</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-assignment-literals">literals</a>
+                        <a class="nav-link nav-link-item" href="#main-assignment-shorthand">shorthand</a>
+                        <a class="nav-link nav-link-item" href="#main-assignment-inline">inline functions</a>
+                        <a class="nav-link nav-link-item" href="#main-assignment-array">arrays</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#main-blocks">Block Template</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-blocks-html">html attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-blocks-text">text attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-blocks-obj">{} attribute</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#main-components">Components</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#main-components-syntax">[] attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-components-register">register</a>
+                        <a class="nav-link nav-link-item" href="#main-components-usage">usage</a>
+                        <a class="nav-link nav-link-item" href="#main-components-data-attribute">{} attribute</a>
+                        <a class="nav-link nav-link-item" href="#main-components-wrapper">html attribute</a>
+                    </nav>
+                </nav>
+            </nav>
+        </div>
+
+<main id="bd-docs-main" class="col-12 col-md-9 col-xl-10 bd-content">
+
+<!-------------------------------------- Overview --------------------------------------->
+<section>
+    <h4 id="main-overview">Overview</h4>
+    <div>
+        <p>json2html is a pure javascript HTML templating library used to render JSON objects into HTML and can be used with</p>
+        <ul>
+            <li><strong>Native Javascript</strong> using the core library</li>
+            <li><strong>jQuery</strong> as jquery plug-in with jquery events</li>
+            <li><strong>Node.js</strong> as node.js package</li>
+        </ul>
+        
+        <p>Each wrapper uses the same template, allowing for the same template to be run on the browser or server!</p>
+    </div>
+</section>
+
+<!-------------------------------------- Usage --------------------------------------->
+<section>
+    <h4 id="main-usage">Usage</h4>
+    <p>JSON2HTML can be used on both the browser and the server.</p>
+    
+    <h5 id="main-usage-native">Native & Node.js</h5>
+    <div>
+        <p>Using the following on the browser or with Node.js</p>
+        <div class='docs-usage'>
+            <blue>json2html.render(obj, template [,options])</blue>
+        
+        	<ul style='list-style:none;margin-left:10px;'>
+        		<li><strong><red>obj</red></strong> object (or array) to render</li>
+        		<li><strong><red>template</red></strong> json2html template</li>
+        		<li>
+    				<strong><red>[options]</red></strong> object with the following options
+    				<div style='margin-left:10px'>
+        				<ul>
+    						<li><strong>components</strong> object with name component pairs</li>
+    					</ul>
+    				</div>
+    			</li>
+        		<li></li>
+        		<li>output: HTML string</li>
+        	</ul>
+        </div>
+    
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow">
+let html = json2html.render([{'s':'json2html'},{'s':'is'},{'s':'awesome'}],{'<>':'li','text':'${s}'});
+</pre>
+        </div>
+    </div>
+    
+    <h5 id="main-usage-jquery">jQuery</h5>
+    <div>
+        <p>Use with jQuery to attach the result to a DOM object along with DOM events</p>
+        
+        <div class='docs-usage'>
+    	    <blue>$(selector).json2html(obj, template [,options])</blue>
+    
+    		<ul style='list-style:none;margin-left:10px;'>
+    		    <li><strong><red>obj</red></strong> object (or array) to render</li>
+        		<li><strong><red>template</red></strong> json2html template</li>
+        		<li>
+    				<strong><red>[options]</red></strong> object with the following options
+    				<div style='margin-left:10px'>
+        				<ul>
+    						<li><strong>components</strong> object with name component pairs</li>
+    						<li><strong>data</strong> data object to be passed to jquery events (see Events)</li>
+    						<li><strong>method</strong> [<strong>append</strong>/prepend/replace] specify how elements will be added to the DOM</li>
+    					</ul>
+    				</div>
+    			</li>
+    		</ul>
+        </div>
+        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow">
+$('ul').json2html([{'s':'json2html'},{'s':'is'},{'s':'awesome'}],{'<>':'li','text':'${s}'});
+</pre>
+        </div>
+        
+        <p>Use to sub render components within a html attribute function call. Allows for jQuery events to be passed correctly.</p>
+    	
+    	<div class='docs-usage'>
+    		<blue>$.json2html(obj, template [,options])</blue>
+    
+    		<ul style='list-style:none;margin-left:10px;'>
+    			<li><strong><red>obj</red></strong> object (or array) to render</li>
+        		<li><strong><red>template</red></strong> json2html template</li>
+        		<li>
+    				<strong><red>[options]</red></strong> object with the following options
+    				<div style='margin-left:10px'>
+        				<ul>
+    						<li><strong>components</strong> object with name component pairs</li>
+    						<li><strong>data</strong> data object to be passed to jquery events (see Events)</li>
+    						<li><strong>output</strong> [<strong>ihtml</strong>/html] specifies the output type</li>
+    					</ul>
+    				</div>
+    			</li>
+    			<li></li>
+    			<li>output: iHTML object (html with events) or HTML string (see output option)</li>
+    		</ul>
+    		
+    		<red>Note: only use this when embedding within a 'html' attribute function call, use json2html.render instead if you want to render to a raw html string</red>
+    	</div>
+    	
+    	<div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow">
+    {'<>':'div','html':function(){
+        return( $.json2html([{'s':'json2html'},{'s':'is'},{'s':'awesome'},{'<>':'li','html':'${s}'}) );
+    }}
+</pre>
+        </div>
+    </div>
+</section>
+
+<!-------------------------------------- Template Types --------------------------------------->
+<section>
+    <h4 id="main-type">Template Types</h4>
+	<p>Templates are a specified using json and can can be either an single object or an array of objects.  Templates can be split into three different types: dom, block or component.</p>
+
+    <h5 id="main-type-dom">dom template</h5>
+    <p>Use a dom template when you want to render a dom element (see dom template for more info)</p>
+    <div>
+                        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+{'<>':'span','html':'im an html element'};
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;span&gt;im an html element!&lt;/span&gt;
+</pre>
+    </div>
+
+    <h5 id="main-type-block">block template</h5>
+    <p>Use a block template when you want to render raw html/text or group a bunch of other templates together (see block template for more info)</p>
+    <div>
+                        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+{'html':'im raw &lt;i&gt;html&lt;/i&gt;'};
+</pre>
+        </div>
+<pre class="prettyprint">
+im raw &lt;i&gt;html&lt;/i&gt;
+</pre>
+        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+{'html':[
+    {'html':'hi there!'},
+    {'<>':'span','html':'im html'}
+]};
+</pre>
+        </div>
+<pre class="prettyprint">
+hi there!
+&lt;span&gt;im html&lt;/span&gt;
+</pre>
+    </div>
+    
+    <h5 id="main-type-component">component</h5>
+    <p>Use a component when you want to create re-usable components.  You can think of them as re-usable blocks (see component for more info)</p>
+    <div>
+                        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+    
+json2html.component.add('link',{'<>':'a','href':'www.example.org','text':'click me'});
+
+let template = {'[]':'link'};
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;a href='www.example.org'&gt;click me&lt;/a&gt;
+</pre>
+    </div>
+</section>
+
+<!-------------------------------------- DOM Template --------------------------------------->
+<section>
+    <h4 id="main-dom">DOM Template</h4>
+        <p>DOM templates are JSON objects that specify a hierarchy of DOM elements (div, span, li, etc..) with name value pairs of the attributes found on the DOM HTML element, with the exception the following reserved attribute names</p>                    
+        <ul>
+            <li><strong><></strong> specifies the type of DOM element (div, span etc..)</li>
+            <li><strong>obj</strong> specifies the obj that this template should render</li> 
+            <li><strong>text</strong> specifies the text to use as the innerHTML</li> 
+            <li><strong>html</strong> specifies the innerHTML for this dom element or contains child templates</li> 
+            <li></li>
+            <li><strong>children</strong> (deprecated)</li> 
+            <li><strong>tag</strong> (deprecated)</li> 
+        </ul>
+                        
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {'<>':'li','html':[
+                    {'<>':'span','html':'${name} (${age})'}
+                ]};
+    
+let data = [
+    {'name':'Bob','age':40},
+    {'name':'Frank','age':15},
+    {'name':'Bill','age':65},
+    {'name':'Robert','age':24}
+];
+    
+$('ul').json2html(data,template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;ul id=&quot;list&quot;&gt;
+    &lt;li&gt;
+        &lt;span&gt;Bob (40)&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;span&gt;Frank (15)&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;span&gt;Bill (65)&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;span&gt;Robert (24)&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+    <h5 id="main-dom-tag"><> attribute</h5>
+    <div>
+		<p>The first <strong>required</strong> step in creating a dom template is specifying the '<>' attribute for each object within the template.  This will specify the HTML element (eg: div,a,p,table etc..) that you wish to be created. <i>Note that the 'tag' attribute can also be used in support of legacy templates</i></p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow">
+{'<>':'div'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;&lt;/div&gt;
+</pre>
+	</div>
+
+    <h5 id="main-dom-text">text attribute</h5>
+    <div>
+		<p>The reserved <strong>text</strong> attribute is used to specify the inner text of the DOM element. As with any other attribute you can specify a literal string, use short hand notation or an inline function (see Assignment for more details). It's recommended to use this to help prevent against <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">XSS attacks</a></p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+let data = [
+    {"text":"&lt;read this as text&gt;"},
+    {"text":"&gt;&lt;img onerror='alert(0);'&gt;"}
+];
+
+let template = {'<>':'div','text':'${text}'};
+</pre> 
+            </div>
+<pre class="prettyprint">
+&lt;div&gt;&amp;lt;read this as text&amp;gt;&lt;/div&gt;
+&lt;div&gt;&amp;gt;&amp;lt;img onerror='alert(0);&amp;gt;&lt;/div&gt;
+</pre>   
+		<p>Use of an inline function can be used as well with the parameters (obj,index) and the 'this' mapped to obj. </p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+let data = [
+    {"text":"&lt;span&gt;read this as text&lt;/span&gt;"}
+];
+
+let template = {'<>':'div','text':function(){ return(json2html.toText(this.text); }};
+</pre> 
+        </div>
+<pre class="prettyprint">
+    &lt;div&gt;&amp;lt;span&amp;gt;read this as text&amp;lt;/span&amp;gt;&lt;/div&gt;
+</pre>
+
+	</div>
+
+    <h5 id="main-dom-html">html attribute</h5>
+    <div>
+		<p>The reserved <strong>html</strong> attribute is used to specify the inner html of the DOM element.  As with any other attribute you can specify a literal string, use short hand notation or an inline function (see Assignment for more details). In addition you can also specify an array of child templates that will belong to this DOM element.
+		    
+		    <br>
+		    <br>
+		    <i>It's highly recommended to use 'text' unless you're needing to specify html directly to help prevent against XSS injection attacks.</i>
+		</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','html':[
+    {'<>':'span','html':'1'},
+    {'<>':'span','html':'2'}
+]} 
+</pre> 
+            </div>
+<pre class="prettyprint">
+&lt;div&gt;
+    &lt;span&gt;1&lt;/span&gt;
+    &lt;span&gt;2&lt;/span&gt;
+&lt;/div&gt; 
+</pre>   
+        <p>Note that there are no limits to the number of children that a template may have or the number of nested levels of children.</p>	
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','html':[
+    {'<>':'div','html':[
+        {'<>':'span','html':'final'}
+    ]
+]} 
+</pre> 
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;
+    &lt;div&gt;
+        &lt;span&gt;final&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+		<p>Use of an inline function can be used to return and html string or from another json2html call.  This may include inserting html using another core json2html.render call (or jquery $.json2html call). </p>
+        
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+let data = [
+    {'id':'100','children':[
+        {'name':'this'},
+        {'name':'is'},
+        {'name':'great!'}
+    ]},
+    {'id':'101','children':[
+        {'name':'this'},
+        {'name':'is'},
+        {'name':'amazing!'}
+    ]}
+];
+
+let templates = {
+    'parent': {'<>':'div','id':'${id}','html':function(obj,index){
+        return $.json2html(
+                    this.children,
+                    templates.child));
+    },
+    'child':{'<>':'span','html':'${name}'}
+};
+
+$('ul').json2html(data,templates.parent);
+</pre> 
+        </div>
+<pre class="prettyprint">
+&lt;ul&gt;
+&lt;li id=100&gt;
+    &lt;span&gt;this&lt;/span&gt;
+    &lt;span&gt;is&lt;/span&gt;
+    &lt;span&gt;great!&lt;/span&gt;
+&lt;/li&gt;
+&lt;li id=101&gt;
+    &lt;span&gt;this&lt;/span&gt;
+    &lt;span&gt;is&lt;/span&gt;
+    &lt;span&gt;amazing!&lt;/span&gt;
+&lt;/li&gt;
+</pre>
+
+	</div>
+	
+	<h5 id="main-dom-obj">{} attribute</h5>
+    <div>
+		<p>The reserved <string>{}</string> attribute can be used to specify the object that you want this template (and any child templates) to render.  Unlike other attributes you MUST specify this as a function with the returned value being the object you wish to render.
+		</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+let data = [
+    {'department':'finance','employees':[
+        {'name':'dorian'},
+        {'name':'monica'}
+    ]}
+];    
+
+let template = [
+    {'<>':'h1','text':'${department}'},
+    {'<>':'ul','html':[
+        {'<>':'li','text':'${name}','{}':function(){return(this.employees)}}
+    ]}
+];
+</pre> 
+            </div>
+<pre class="prettyprint">
+&lt;h1&gt;finance&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li&gt;dorian&lt;/li&gt;
+    &lt;li&gt;monica&lt;/li&gt;
+&lt;/div&gt; 
+</pre>   
+
+		<p>Keep in mind that any children will also use the same object as the one specified by its parent.
+		</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+let data = [
+    {'department':'finance','employees':[
+        {'name':'dorian','salary':'$40,000'},
+        {'name':'monica','salary':'$60,000'}
+    ]}
+];    
+
+let template = [
+    {'<>':'h1','text':'${department}'},
+    {'<>':'ul','html':[
+        {'<>':'li','obj':function(){return(this.employees)},'html':[
+            {'<>':'span','text':'${name}'},
+            {'<>':'strong','text':'(${salary})'}
+        ]}
+    ]}
+];
+</pre> 
+            </div>
+<pre class="prettyprint">
+&lt;h1&gt;finance&lt;/h1&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+        &lt;span&gt;dorian&lt;/span&gt;
+        &lt;strong&gt;($40,000)&lt;/strong&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;span&gt;monica&lt;/span&gt;
+        &lt;strong&gt;($60,000)&lt;/strong&gt;
+    &lt;/li&gt;
+&lt;/div&gt; 
+</pre>   
+	</div>
+	
+	<h5 id="main-dom-other">dom specific attributes</h5>
+    <div>
+		<p>All other <strong>dom</strong> attributes are supported (eg 'id', 'class', 'style', 'data-*', 'href'  etc..).</p>
+        
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','id':'id-123','class':'red','data-id':'123','text':'some text'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div id='id-123' class='red' data-id='123' &gt;some text&lt;/div&gt;
+</pre>
+    </div>
+    
+    <h5 id="main-dom-events">events</h5>
+    <div>
+        <p>Using the jquery wrapper allows for events to be embedded within a template.  These events will be automatically attached when the template is applied to the DOM using a jquery selector function <i>eg. $('ul').json2html(..))</i></p>
+					
+		<p>Event attributes (onclick, onfocus, onmouseout etc..) are created by adding an event handler to the DOM element using jquery, each handler requires an inline function to evaulate when the event is triggered.  Supported events include all jQuery events that can be attached to a DOM element, simply add the 'on' prefix to the following found on the <a href='https://api.jquery.com/category/events/'>jQuery events page</a>
+            <br>
+            <br>Here's a partial list of the supported events, with the required 'on' prefix added
+            
+            <ul>
+                <li>onclick</li>
+                <li>onblur</li>
+                <li>ondblclick</li>
+                <li>ondie</li>
+                <li>onerror</li>
+                <li>onchange</li>
+                <li>onhover</li>
+                <li>onfocus</li>
+                <li>etc..</li>
+            </ul>
+            
+        </p>
+        
+        <div class='docs-example'>
+<pre class="prettyprint">
+{'<>':'button','onclick':function(e){
+    //e.event : the jQuery event
+    //e.data  : user specified data from the the json2html options variable <i>data</i> (see Usage)
+    //e.obj   : the source object that we're rendering
+    //e.index : the index of the array in which the source object was found
+}}
+</pre>
+        </div>
+        
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'button','html':'click me','onclick':function(e){
+    console.log(e.obj.name);
+}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;button&gt;click me&lt;/button&gt;
+</pre>
+        
+        <p>In addition to jquery events there's an added event 'onready' which will be triggered once the template has been rendered.</p>
+
+<div class='docs-example'>
+<pre class="prettyprint">
+{'<>':'div','onready':function(e){
+    //triggered once the div has been rendered and is available to the dom
+}}
+</pre>
+        </div>
+        
+        <p>The jquery element that called the event can also be accessed using $(this); which is the same as referencing e.event.target in the example above</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'span','onclick':function(){
+    $(this).hide();
+}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;span&gt;click me&lt;/span&gt;
+</pre>
+
+    </div>
+</section>
+
+<!-------------------------------------- Assignment --------------------------------------->
+<section>
+    <h4 id="main-assignment">Assignment</h4>
+	<p>To assign data from the object your rendering you'll need to use one of the following assignment methods</p>
+
+    <h5 id="main-assignment-literals">Literals</h5>
+    <div>
+		<p>You can assign literal text to any of the dom attributes of a template. </p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','id':'some-div','class':'some-class','html':'some stuff'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div id='some-div' class='some-class' &gt;some stuff&lt;/div&gt;
+</pre>
+    </div>
+    
+    <h5 id="main-assignment-shorthand">shorthand</h5>
+    <div>
+    	<p>Shorthand notation is the easiest way to map data into your template, simply specify the variable in the format ${name} where name is the variable name within the data object.  This variable will then be inserted into that attribute during render.</p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','id':'${id}','class':'${highlight}','text':'${title} is amazing!'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div id='1' class='red'&gt;Fast and the Furious: Part 2 is amazing!&lt;/div&gt;
+</pre>
+
+        <p>The above example will map the data 'title' to the inner text of the div, it will also use the variable 'highlight' as the class name and 'id' for the id of the DOM object.  You can also use reference sub objects with a '.' like address.state or address.0 if the object is an array:</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','text':'${movie.0.title} is amazing!'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Fast and the Furious is amazing!&lt;/div&gt;
+</pre>
+        <p>The above example will map the source JSON field movie [0].title to the inner text of the div.</p>
+	</div>
+	
+    <h5 id="main-assignment-inline">inline function</h5>
+    <div>
+		<p>Inline functions can be used to embed logic to assign property values to any dom attributes including the reserved attributes (<>, [], html and text).
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','class':function(){return('red');},'html':'this is in red'}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div class='red'&gt;this is in red&lt;/div&gt;
+</pre>
+        <p>json2html will pass the data object to the function as a parameter as well as the index in the array of objects that it was found, allowing for the function to process the fields in any manner.</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','html':function(obj,index){
+                        return(obj.title + ': ' + obj.date);
+                    }}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Fast and the Furious : May 10th 2011&lt;/div&gt;
+</pre>
+        <p>Alternatively, the data object can also be referenced using the key word 'this'</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','html':function(){return(this.title + ': ' + this.date);}}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Fast and the Furious : May 10th 2011&lt;/div&gt;
+</pre>
+
+        <p>Note the above example could also be done using short-hand notation, as follows</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'div','html':'${title} : ${date}'}
+</pre>	
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Fast and the Furious : May 10th 2011&lt;/div&gt;
+</pre>
+
+        <p>	When using an inline function you can also reference the index of the object you're rendering if your data object is an array</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'li','html':function(obj,index){
+                        return(index + ". " + obj.title);
+                    }}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;ul&gt;
+    &lt;li&gt;0. Fast and the Furious&lt;/li&gt;
+    &lt;li&gt;1. The Avengers&lt;/li&gt;
+    &lt;li&gt;2. Iron Man&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+    </div>
+    
+    <h5 id="main-assignment-array">arrays</h5>
+    <div>
+		<p>If the object your rendering an array of literals (ie non objects) you can reference each element in the array by using the keyword 'value' and the index using the keywork 'index'. Note that these keywords only work with arrays or literals and not arrays of objects
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'<>':'tr','html':
+    {'<>':'td','text':'${index} - ${value}'}
+}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;tr&gt;&lt;td&gt;0 - first element value&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;1 - second element value&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2 - thrid element value&lt;/td&gt;&lt;/tr&gt;
+</pre>
+        <p>You can also reference the keywords within a function using longhand notation this.index and this.value</p>
+
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+{'<>':'tr','html':
+    {'<>':'td','text':function(){
+        return(this.index + '- ' + this.value);
+    }}
+}
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;tr&gt;&lt;td&gt;0 - first element value&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;1 - second element value&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2 - thrid element value&lt;/td&gt;&lt;/tr&gt;
+</pre>
+    </div>
+</section>
+
+<!-------------------------------------- Blocks --------------------------------------->
+<section>
+    <h4 id="main-blocks">Blocks</h4>
+	<p>Blocks are templates that don't produce dom objects instead they can be used to insert raw text/html or map data to child templates. Unlike dom templates you can only use the following reserved attributes</p>
+    <ul>
+        <li><strong>obj</strong> specifies the obj that this template should render</li> 
+        <li><strong>text</strong> specifies a string of text (or inline function that returns text)</li> 
+        <li><strong>html</strong> specifies the html string (or array of child templates)</li> 
+    </ul>
+	
+    <h5 id="main-blocks-html">html attribute</h5>
+    <div>
+		<p>Use the 'html' reserved attribute to insert raw html, just like you would with a dom template</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+let data = [
+    {'name':'dorian'},
+    {'name':'monica'}
+];
+
+let template = {'html':'&lt;li&gt${name}&lt;/li&gt;'}
+</pre>
+<pre class="prettyprint">
+&lt;li&gt;dorian!&lt;/li&gt;
+&lt;li&gt;monica!&lt;/li&gt;
+</pre>
+        </div>
+        
+        <p>or use to specify a block of templates (dom, component or blocks). This works well when maping a data object to the entire block (see {} attribute below for example)</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'html':[
+    {'<>':'p','text':'hi there!'},
+    {'html':'we like stuff'},
+    {'[]':'link'}
+]}
+</pre>
+<pre class="prettyprint">
+&lt;p&gt;hi there!&lt;/p&gt;
+we like stuff
+&lt;a href='https://example.org'&gt;click me!&lt;/a&gt;
+</pre>
+        </div>
+        
+        <p>or just like the dom template a function with the result being either an html string or an iHTML object</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'html':function(){return("hello");}}
+</pre>
+<pre class="prettyprint">
+hello
+</pre>
+        </div>
+    </div>
+    
+    <h5 id="main-blocks-text">text attribute</h5>
+    <div>
+        
+        <p>Just like a dom template the text attribute will only render text, encoding all html specific characters and can be used to help prevent xss injection attacks.</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'text':'&lt;span&gt;read this as text&lt;/span&gt;'}
+</pre>
+<pre class="prettyprint">
+&amp;lt;span&amp;gt;read this as text&amp;lt;/span&amp;gt;
+</pre>
+        </div>
+        
+        <p>and just like a dom template the text attribute can also be a function with the return value being text.</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+let data = {'name':'dorian'}    
+
+let template = {'text':function(){return(this.name}}
+</pre>
+<pre class="prettyprint">
+dorian
+</pre>
+        </div>
+        
+    </div>
+    
+    <h5 id="main-blocks-obj">{} attribute</h5>
+    <div>
+		<p>Use the '{}' reserved attribute specify the object that you want to render with this template block and all its children. Note that you MUST use a function with the return value being object (or array) you want to render for this template.  The parameters for this function will be the (obj,index) and 'this' will be mapped to the source parent object.</p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+
+let data = {
+    "employees":[
+        {'name':'dorian','role':'CEO'},
+        {'name':'monica','role':'CFO'}
+    ]
+};
+
+let template = {'{}':function(){return(this.employees)},'html':[
+        {'<>':'div','html':[
+            {'<>':'span','text':'${name}'},
+            {'<>':'span','text':'(${role})'}
+        ]}
+    ]};
+</pre>
+<pre class="prettyprint">
+&lt;div&gt; 
+    &lt;span&gt;dorian&lt;/span&gt;
+    &lt;span&gt;CEO&lt;/span&gt;
+&lt;/div&gt;   
+&lt;div&gt; 
+    &lt;span&gt;monica&lt;/span&gt;
+    &lt;span&gt;CFO&lt;/span&gt;
+&lt;/div&gt;  
+</pre>
+        </div>
+    </div>
+        
+</section>
+
+<!-------------------------------------- Components --------------------------------------->
+<section>
+    <h4 id="main-components">Components</h4>
+	<p>Components are an easy way to create re-usable templates. They can be embedded within templates or used as wrappers around templates. You can create them using the following reserved attributes</p>
+    <ul>
+        <li><strong>[]</strong> specifies the name of the component</li>
+        <li><strong>obj</strong> specifies the obj that this template should render</li> 
+        <li><strong>html</strong> specifies the array of child templates we want to wrap with this component</li> 
+        <li><strong>{}</strong> specifies object you want this component to render</li>
+    </ul>
+    
+    <h5 id="main-components-syntax">[] attribute</h5>
+    <div>
+		<p>Each component is designed using the reserved '[]' attribute with the name of the component. </p>
+                
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+{'[]':'item'}
+</pre>
+        </div>
+    </div>
+    
+    <h5 id="main-components-registration">register</h5>
+    <div>
+    	<p>Before a component can be used it must first be registered. Use the <i>json2html.component.add(name,template)</i> method to register your component and its friendly name (which will be used to reference the component)</p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+json2html.component.add("item",{'<>':'li','text':'${title} is amazing!'});
+</pre>
+        </div>
+        
+        <p>Note: you can always use the <i>json2html.component.get(name)</i> to get the component directly if required</p>
+    
+        <p>Components can also be registered on mass using the <i>json2html.component.add(components)</i> where components is an object with name value pairs of components</p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+json2html.component.add({
+    'list':{'<>':'ul','html':[{[]:"item"}]},
+    'item':{'<>':'li','text':'${title} is amazing!'}
+});
+</pre>
+        </div>
+    
+    </div>
+    
+    <h5 id="main-components-usage">usage</h5>
+    <div>
+    	<p>
+    	   Once a component is registered you can use it within the same scope as your <i>json2html.render</i> call (for the browser this means the same page or for node.js this means the same scope as the require library call)
+    	   <br>
+    	   <br>
+    	   By default the component uses the same data object as its parent, in the case below this is the same data object that was being rendered.
+        </p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+json2html.component.add('link',{'<>':'a','href':'${url}','text':'${title}'});
+
+let template = [
+    {'<>':'h1','text':'${heading}'},
+    {'[]':'link'}
+];
+
+let data = {
+    'heading';'Search Engine',
+    'title':'Google Search',
+    'url':'https://www.google.com'
+};
+
+json2html.render(data,template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;h1&gt;Search Engine&lt;/h1&gt;
+&lt;a href='https://www.google.com'&gt;Google Search&lt;/a&gt;
+</pre>
+    	</div>
+    	
+    	<h5 id="main-components-data-attribute">{} attribute</h5>
+    	<div>
+        	<p>
+        	    To make the component more useful you can specify the object you want the component to render, this can be done using the reserved '{}' attribute.
+        	    <br>
+        	    <br>
+        	    Unlike dom template attributes (specified with the <>) components only have two reserved attributes '{}' and 'html'.  The '{}' attribute uses a function call to specify what object this component should render, by default this object is the same as it's parent (or original json2html.render call).
+                You can access the keyword 'this' to access the data object that we are rendering within the 'data' function.
+            </p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+json2html.component.add('movie',{'<>':'li','text':'${title} is amazing!'});
+
+let template = [
+    {'<>':'h1','text':'${name}'},
+    {'<>':'ul','html':[
+        {'[]':'movie','{}':function(){return(this.movies);}
+    ]};
+
+let data = {
+    'name':'My Movie List',
+    'movies':[
+        {'title':'Lonely Hearts'},
+        {'title':'National Treasure'}
+    ]};
+
+json2html.render(data,template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;h1&gt;My Movie List&lt;/h1&gt;
+&lt;ul&gt; 
+    &lt;li&gt;Lonley Hearts is amazing!&lt;/li&gt;
+    &lt;li&gt;National Treasure is amazing!&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+        </div>
+        
+        <h5 id="main-components-wrapper">html attribute</h5>
+    	<div>
+        	<p>
+        	    In addition to using components as children within templates you can also use them as parents in order to create a type of wrapper around a template.  This helps when creating re-usable components that wrap templates, like a page heading.
+        	    <br>
+        	    <br>
+        	    This is done using the reserved 'html' attribute for the component, which can take another json2html template (array or object).  You can then use the template you've wrapped in your component by accessing the html parameter from your 'html' attribute function call like the example below.
+            </p>
+    
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+json2html.component.add('page',
+    {'<>':'section','html':[
+        {'<>':'h1','text':'${title}'},
+        {'<>':'div','html':function(obj,index,data,html){return(html);}}
+    ]});
+
+let template = [
+    {'[]':'page','html':[
+        {'<>':'p','text':'${content}'}
+    ]};
+
+let data = {
+    'title':'My First Page',
+    'content':'my custom page content'
+};
+
+json2html.render(data,template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;section&gt;
+    &lt;h1&gt;My First Page!&lt;/h1&gt;
+    &lt;div&gt;
+        &lt;p&gt;my custom page content&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+</pre>
+
+        </div>
+        
+</section>
+
+
+</main>
+
+      </div>
+    </div>
+    
+    <footer class="bd-footer text-muted">
+        <div class="container-fluid p-3 p-md-5">
+            &copy; 2022 JSON2HTML
+        </div>
+    </footer>
+</body>
+
+<script>
+    
+    $(function() {
+        // Activate scrollspy to add active class to navbar items on scroll
+          $('body').scrollspy({
+            target: '#bd-docs-nav',
+            offset: 90
+          });
+
+        //make code pretty
+        prettyPrint();
+    });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28003704-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</html>

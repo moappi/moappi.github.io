@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>json2html &bull; lightning fast HTML templating for node.js &amp; jquery</title>
+    
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Base Styling-->
+    <link href="/css/index.css" rel="stylesheet">
+    
+    <!-- Meta -->
+    <meta name="description" content="JSON2HTML is a lightning fast client side javascript HTML templating library for both jQuery and Node.js.">
+    <meta name="author" content="Chad Brown">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.0/json2html.min.js"></script>
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.4/beautify-html.min.js"></script>
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,400,700">
+
+    <link href="/js/prettify.css" rel="stylesheet">
+    <script src="/js/prettify.js"></script>
+    
+    <style>
+        textarea {
+            width:100%;
+            height:350px;
+            border:none;
+            color:#6f6f6f;
+            padding-top:10px;
+        }
+        
+        .tab-content {
+            border-bottom: thin solid #ddd;
+        }
+        
+        .hide-soft {
+            display:none;
+        }
+    </style>
+    
+    <link href="/img/favicon.ico" rel="icon" type="image/ico">
+</head>
+
+<body>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="JSON2HTML">
+            <img src="/img/json2html-logo-white.png" style="width:36px;height:36px;"/>
+        </a>
+   
+        <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/started/">Get Started</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/docs/">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/examples/">Examples</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/builder/">Builder</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualizer/">Visualizer</a>
+              </li>
+            </ul>
+        </div>
+        
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item">
+              <a class="nav-link p-2" href="https://github.com/moappi/json2html" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36" focusable="false"><title>GitHub</title><path d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+              </a>
+            </li>
+        </ul>
+        
+        <a class="btn btn-bd-yellow d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/moappi/json2html/archive/master.zip">Download</a>
+    </header>
+
+    <div class="container" style="padding-top:50px;">
+        
+        <h4>Template Builder</h4>
+        
+        <p>Having a hard time figuring out how to create a template?  Use the template builder below to help encode HTML into a template.</p>
+    
+        <p>Simply enter the HTML temlate and click on the "Template" tab to get the template or vice versa.</p>
+    
+        <p><i>Note: Templates require that all text be wrapped in an html element; mixed text with html elements will result in text being removed.</i></p>
+    
+        <div id="error-msg" class="alert alert-danger hide-soft" role="alert">
+            <strong>Ooops there was an Error</strong>
+            <br>
+            <p></p>
+        </div>
+    
+        <ul class="nav nav-tabs" style="padding-top:15px">
+          <li class="nav-item">
+            <a id="json2html" class="nav-link active" href="#html-tab">HTML</a>
+          </li>
+          <li class="nav-item">
+            <a id="html2json" class="nav-link" href="#json-tab">Template (JSON)</a>
+          </li>
+        </ul>
+        
+        <div class="tab-content">
+            <div id="html-tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="html-tab">
+<textarea placeholder="Enter HTML Template (Valid HTML)">
+<div id="${id}">
+  <ul>
+    <li>First Name: ${fname}</li>
+    <li>Last Name: ${lname}</li>
+    <li>Age: ${age}</li>
+  </ul>
+</div></textarea>
+            </div>
+            <div id="json-tab" class="tab-pane fade"  role="tabpanel" aria-labelledby="json-tab">
+                <textarea placeholder="Enter JSON Transform (Valid JSON Object)"></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <div id='html-output' class='hide-soft'></div>
+    
+    <footer class="bd-footer text-muted">
+        <div class="container-fluid p-3 p-md-5">
+            &copy; 2022 JSON2HTML
+        </div>
+    </footer>
+</body>
+
+<script>
+    
+    var error = {
+        "show":function(msg){
+            $('#error-msg > p').html(msg);
+	        $('#error-msg').show();
+        },
+        "hide":function(){
+            $('#error-msg').hide();
+        }
+    };
+    
+    $(function(){
+	
+	    //Create template
+	    $("#json2html").click(function(){
+	        
+	        //Hide the error message
+	        error.hide();
+	        
+	        //Clear the html
+	        $('#html-tab > textarea').empty();
+	        
+	        //Get the JSON object
+	        var json = $('#json-tab > textarea').val();
+	        
+	        //Exit if we don't have any JSON
+	        if(!json.length) {
+	            $(this).tab('show');
+	            return;
+	        }
+	        
+	        //Parse the JSON object
+	        try {
+	            json = JSON.parse(json);
+	        } catch(e){
+	            json = undefined;
+	            error.show(e.message);
+	        }
+	        
+	        //Determine if we have json to render
+	        if(json){
+
+	            var _error = false;
+	            
+	            var $obj = $('<div/>');
+	            
+	            try {
+        	        //Set the html in the tab
+        	        toTemplate(json,$obj);
+	            } catch(e){
+	                error.show(e.message);
+	                _error = true;
+	            }
+	            
+	            //If we don't have an error
+	            if(!_error) {
+	                
+	                //Add the children to the text area
+	                $("#html-tab > textarea").val( html_beautify($obj.html(), { indent_size: 2, indent_inner_html:true }));
+    	        
+        	        //Switch to the tab
+        	        if(!_error) $(this).tab('show');
+	            }
+	        }
+	    });
+	    
+	    //Create transform
+	    $("#html2json").click(function(){
+	        
+	        //hide the error message
+	        error.hide();
+	        
+	        var html = $('#html-tab > textarea').val();
+
+	        if(!html.length) {
+	            $(this).tab('show');
+	            return;
+	        }
+	        
+	        //Set html output
+    		$('#html-output').html( html );
+    		
+    		//Process to JSON and format it for consumption
+    		$('#json-tab > textarea').val( formatJSON(toTransform($('#html-output').children())) );
+    		
+    		//Switch to the tab 
+    		$(this).tab('show');
+	    });
+    
+    });
+    
+    //Convert json to dest object
+    function toTemplate(json,$html) {
+
+    	//Create the html
+    	if(!Array.isArray(json)) $html.append(obj2Template(json));
+    	else {
+    	    for(var i=0; i < json.length; i++)
+    	        $html.append(obj2Template(json[i]));
+    	} 
+    }
+    
+    //Convert json to template
+    function obj2Template(json) {
+    	
+    	//Make sure we have a tag object
+    	var tag = json['<>'] || json['tag'];
+    	if(!tag) throw "Missing required attribute <>";
+    	
+    	//Create element
+    	var $obj = $("<" + tag + "/>");
+    	
+    	//Add the other attributes (except for the html)
+    	for(var prop in json){
+    	    
+    	    var _prop = prop.toLowerCase();
+    	    
+    	    switch(_prop){
+                case '<>':
+                    //Do nothing
+                break;
+                
+                case 'html':
+                    //Add the html object
+                    // transform any children if necessary
+                    if(typeof(json['html']) === 'string') $obj.html(json['html']);
+                    else toTemplate(json['html'],$obj);
+                break;
+                
+                default:
+                    //Add the other properties as html attributes
+                    $obj.attr(_prop,json[prop]);
+                break;
+            }
+        }
+        
+        return($obj);
+    }
+    
+    //Convert obj or array to transform
+    function toTransform(obj) {
+    	
+    	var json;
+    	
+    	if( obj.length > 1 ) {
+    		json = [];
+    
+    		for(var i = 0; i < obj.length; i++)
+    			json[json.length++] = obj2Transform(obj[i]);
+    	} else json = obj2Transform(obj);
+    
+    	return(json);
+    }
+    
+    //Convert obj to transform
+    function obj2Transform(obj) {
+    	//Get the DOM element
+    	var el = $(obj).get(0);
+    
+    	//Add the tag element
+    	var json = {'<>':el.nodeName.toLowerCase()};
+    
+    	for (var attr, i=0, attrs=el.attributes, l=attrs.length; i<l; i++){
+    		attr = attrs[i];
+    		json[attr.nodeName] = escapeJSON(attr.value);
+    	}
+    	
+    	var children = $(obj).children();
+    
+    	if( children.length > 0 ) json['html'] = [];
+    	else json['html'] = escapeJSON($(obj).text());
+    
+    	//Add the children
+    	for(var c = 0; c < children.length; c++)
+    		json['html'][json['html'].length++] = toTransform(children[c]);
+    
+    	return(json);
+    }
+    
+    //Format JSON (with indents)
+    function formatJSON(oData, sIndent) {
+    	if (arguments.length < 2) {
+    		var sIndent = "";
+    	}
+    	var sIndentStyle = "  ";
+    	var sDataType = RealTypeOf(oData);
+    
+    	// open object
+    	if (sDataType == "array") {
+    		if (oData.length == 0) {
+    			return "[]";
+    		}
+    		var sHTML = "[";
+    	} else {
+    		var iCount = 0;
+    		$.each(oData, function() {
+    			iCount++;
+    			return;
+    		});
+    		if (iCount == 0) { // object is empty
+    			return "{}";
+    		}
+    		var sHTML = "{";
+    	}
+    
+    	// loop through items
+    	var iCount = 0;
+    	$.each(oData, function(sKey, vValue) {
+    		if (iCount > 0) {
+    			sHTML += ",";
+    		}
+    		if (sDataType == "array") {
+    			sHTML += ("\n" + sIndent + sIndentStyle);
+    		} else {
+    			sHTML += ("\"" + sKey + "\"" + ":");
+    		}
+    
+    		// display relevant data type
+    		switch (RealTypeOf(vValue)) {
+    			case "array":
+    			case "object":
+    				sHTML += formatJSON(vValue, (sIndent + sIndentStyle));
+    				break;
+    			case "boolean":
+    			case "number":
+    				sHTML += vValue.toString();
+    				break;
+    			case "null":
+    				sHTML += "null";
+    				break;
+    			case "string":
+    				sHTML += ("\"" + escapeJSON(vValue) + "\"");
+    				break;
+    			default:
+    				sHTML += ("TYPEOF: " + typeof(vValue));
+    		}
+    
+    		// loop
+    		iCount++;
+    	});
+    
+    	// close object
+    	if (sDataType == "array") {
+    		sHTML += ("\n" + sIndent + "]");
+    	} else {
+    		sHTML += ("}");
+    	}
+    
+    	// return
+    	return sHTML;
+    }
+    
+    //Get the type of the obj (can replace by jquery type)
+    function RealTypeOf(v) {
+      if (typeof(v) == "object") {
+    	if (v === null) return "null";
+    	if (v.constructor == (new Array).constructor) return "array";
+    	if (v.constructor == (new Date).constructor) return "date";
+    	if (v.constructor == (new RegExp).constructor) return "regex";
+    	return "object";
+      }
+      return typeof(v);
+    }
+    
+    function escapeJSON(str) {
+        return str.replace(/[\n\r]/g, "\\n")
+                   .replace(/\\'/g, "\\'")
+                   .replace(/\\"/g, '\\"')
+                   .replace(/\\&/g, "\\&")
+                   .replace(/\\r/g, "\\r")
+                   .replace(/\\t/g, "\\t")
+                   .replace(/\\b/g, "\\b")
+                   .replace(/\\f/g, "\\f");
+        
+    }
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28003704-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</html>

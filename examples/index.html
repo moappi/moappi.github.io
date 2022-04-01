@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>json2html &bull; lightning fast HTML templating for javascript, node.js &amp; jquery</title>
+    
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Base Styling-->
+    <link href="/css/index.css" rel="stylesheet">
+    
+    <!-- Meta -->
+    <meta name="description" content="JSON2HTML is a lightning fast client side javascript HTML templating library for native javascript, jQuery and Node.js.">
+    <meta name="author" content="Chad Brown">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+
+    <link href="/js/prettify.css" rel="stylesheet">
+    <script src="/js/prettify.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/1.4.0/json2html.min.js"></script>
+    
+    <!-- Page Specific Styling-->
+    <link href="css/index.css" rel="stylesheet">
+    
+    <style>
+    
+        body {
+            padding-bottom:80px;
+        }
+    
+        #example-jquery-app-output ul {
+            margin:0;
+            padding:0;
+            width:100%;
+        }
+        
+        #example-jquery-app-output ul li {
+            width:100%;
+            list-style:none;
+            cursor:pointer;
+            padding:3px;
+            margin-top:5px;
+            border-bottom:2px solid transparent;
+        }
+        
+        #example-jquery-app-output ul li:hover {
+            border-bottom:2px solid green;
+        }
+    
+        .box {
+            height:80px;
+            text-align:center;
+            font-size: 10pt;
+            padding-top: 28px;
+            margin:5px;
+            cursor:pointer;
+            border-radius: 5px;
+        }
+        
+        .red {
+            background-color:#ff00004d;
+            border:thin solid #ff0000b0;
+        }
+        
+        .blue {
+            background-color:#0000ff57;
+            border:thin solid #0000ffa8;
+        }
+        
+        .note {
+            padding:5px;
+            padding-top:10px;
+            padding-bottom:10px;
+            border:thin solid red;
+            background-color:#fd5d5d;
+            border-radius:5px;
+            color:white;
+        }
+        
+        .note a {
+            color:white;
+            text-decoration:underline;
+        }
+        
+        .note a:hover {
+            text-decoration:underline;
+        }
+    </style>
+    
+    <link href="/img/favicon.ico" rel="icon" type="image/ico">
+</head>
+
+<body>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="JSON2HTML">
+            <img src="/img/json2html-logo-white.png" style="width:36px;height:36px;"/>
+        </a>
+   
+        <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/started/">Get Started</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/docs/">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/examples/">Examples</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/builder/">Builder</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualizer/">Visualizer</a>
+              </li>
+            </ul>
+        </div>
+        
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item">
+              <a class="nav-link p-2" href="https://github.com/moappi/json2html" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36" focusable="false"><title>GitHub</title><path d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+              </a>
+            </li>
+        </ul>
+        
+        <a class="btn btn-bd-yellow d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/moappi/json2html/archive/master.zip">Download</a>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar d-none d-sm-block">
+           <nav id="bd-docs-nav" class="navbar flex-column">
+                <nav class="nav flex-column">
+                    
+                    <a class="nav-link nav-link-header" href="#example-basic">The Basics</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item active" href="#example-basic-dom">DOM Heirarchy</a>
+                        <a class="nav-link nav-link-item" href="#example-basic-short-hand">Short Hand Notation</a>
+                        <a class="nav-link nav-link-item" href="#example-basic-inline">Inline Function</a>
+                        <a class="nav-link nav-link-item" href="#example-basic-nested">Object Assignment</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#example-jquery">jQuery</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#example-jquery-selectors">Selectors</a>
+                        <a class="nav-link nav-link-item" href="#example-jquery-events">Events</a>
+                        <a class="nav-link nav-link-item" href="#example-jquery-app">App</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#example-components">Components</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#example-components-basic">Registering &amp; Using</a>
+                    </nav>
+                    
+                    <a class="nav-link nav-link-header" href="#example-node">Node.js</a>
+                    <nav class="nav flex-column">
+                        <a class="nav-link nav-link-item" href="#example-node-require">Require</a>
+                    </nav>
+                </nav>
+            </nav>
+        </div>
+
+        <main id="bd-docs-main" class="col-12 col-md-9 col-xl-10 bd-content">
+
+<!-- More Examples -->
+<p class="note">These example are great but ... more comprehensive examples can be found in the examples folder on the <a href="https://github.com/moappi/json2html/tree/master/examples">json2html github page</a></p>
+
+<!-- The Basics -->
+<section>
+    <h4 id="example-basic">The Basics</h4>
+
+    <h5 id="example-basic-dom">DOM Heirarchy</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {'<>':'div','class':'card','html':[
+                    {'<>':'img','alt':'this is our logo','src':'logo.jpg'},
+                    {'<>':'p','text':'Welcome to json2html!'}
+                ]};
+    
+document.write( json2html.render({},template) );
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div class=&quot;card&quot;&gt;
+    &lt;img src=&quot;logo.jpg&quot;src=&quot;this is our logo&quot;&gt;&lt;/img&gt;
+    &lt;p&gt;Welcome to json2html!&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+    </div>
+    
+    <h5 id="example-basic-short-hand">Short Hand Notation</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {'<>':'div','text':'${name} (${age})'};
+    
+let data = [
+    {'name':'Bob','age':40},
+    {'name':'Frank','age':15},
+    {'name':'Bill','age':65},
+    {'name':'Robert','age':24}
+];
+    
+document.write( json2html.render(data,template) );
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Bob (40)&lt;/div&gt;
+&lt;div&gt;Frank (15)&lt;/div&gt;
+&lt;div&gt;Bill (65)&lt;/div&gt;
+&lt;div&gt;Robert (24)&lt;/div&gt;
+</pre>
+    </div>
+    
+    <h5 id="example-basic-inline">Inline Function</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint linenums">
+let template = {'<>':'div','class':function(){if(this.score < 10) return('red');},'html':'${company}'};
+
+let data = [{'company':'ABC Corp.','score':15},
+            {'company':'XYZ Inc.','score':9},
+            {'company':'PBB Org.','score':35},
+            {'company':'CBA Ltd.','score':5}];
+            
+document.write( json2html.render({},template) );
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;ABC Corp.&lt;/div&gt;
+&lt;div class='red'&gt;XYZ Inc.d&lt;/div&gt;
+&lt;div&gt;PBB Org.&lt;/div&gt;
+&lt;div class='red'&gt;CBA Ltd.&lt;/div&gt;
+
+</pre>
+    </div>
+    
+    <h5 id="example-basic-nested">Object Assignment</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {'ul','html':[
+        {'<>':'li','text':'${name} (${age})','obj':function(){return(this.employees)}},
+    ]};
+    
+let data = {
+    'employees':[
+        {'name':'Bob','age':40},
+        {'name':'Frank','age':15},
+        {'name':'Bill','age':65},
+        {'name':'Robert','age':24}
+    ]
+];
+    
+document.write( json2html.render({},template) );
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;ul&gt;
+    &lt;li&gt;Bob (40)&lt;/li&gt;
+    &lt;li&gt;Frank (15)&lt;/li&gt;
+    &lt;li&gt;Bill (65)&lt;/li&gt;
+    &lt;li&gt;Robert (24)&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+    </div>
+</section>
+
+<!-- jQuery-->
+<section>
+    <h4 id="example-jquery">jQuery</h4>
+
+    <h5 id="example-jquery-selectors">Selectors</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {'<>':'li','text':'${name} (${age})'};
+    
+let data = [
+    {'name':'Bob','age':40},
+    {'name':'Frank','age':15},
+    {'name':'Bill','age':65},
+    {'name':'Robert','age':24}
+];
+    
+$('ul').json2html( data,template );
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;ul&gt;
+    &lt;li&gt;Bob (40)&lt;/li&gt;
+    &lt;li&gt;Frank (15)&lt;/li&gt;
+    &lt;li&gt;Bill (65)&lt;/li&gt;
+    &lt;li&gt;Robert (24)&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+    </div>
+    
+    <h5 id="example-jquery-events">Events</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let template = {"<>":"div","class":"row","html":[
+                    {"<>":"div","class":"col-sm box ${colour}","text":"${click}","onclick":function(){
+                        $(this).css("visibility","hidden");
+                    }},
+                    {"<>":"div","class":"col-sm box ${colour}","text":"${dblclick}","ondblclick":function(){
+                        $(this).css("visibility","hidden");
+                    }}
+                ]};
+    
+let data = [
+        {"click":"click me","dblclick":"dbl click me","colour":"red"},
+        {"click":"click me harder","dblclick":"dbl click me now","colour":"blue"}
+    ];
+    
+$('#example-jquery-events-output').json2html( data,template );
+</pre>
+        </div>
+        <div id="example-jquery-events-output"></div>
+    </div>
+    
+    <h5 id="example-jquery-app">App</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+let templates = {
+    "list":{"<>":"ul","html":[
+    
+        {"{}":function(){return(this.movies)},"html":[
+        
+            {"<>":"li",
+                "html":function(obj,index){return( (index+1) + ". " + obj.title);},
+                "onclick":function(e){$("details").empty().json2html(e.obj,templates.details);}
+            }
+            
+        ]}
+    ]},
+    
+    "details":[
+        {"<>":"div","html":[
+            {"<>":"h5","text":"${title}"}
+        ]},
+        {"<>":"div","text":"Year: ${year}"},
+        {"<>":"div","text":"Rating: ${rating}"},
+    ]
+};
+                
+let data = {
+    "movies":[
+        {"title":"The Shawshank Redemption","year":"1994","rating":"9.2"},
+        {"title":"The Godfather","year":"1972","rating":"9.2"},
+        {"title":"The Godfather: Part II","year":"1974","rating":"9.0"},
+        {"title":"The Dark Knight ","year":"2008","rating":"9.0"},
+        {"title":"12 Angry Men","year":"1957","rating":"9.0"}
+    ]
+};
+
+$("#list").json2html({},transforms.list);
+</pre>
+        </div>
+        <div id="example-jquery-app-output" class="row">
+            <div class="col-sm list"></div>
+            <div class="col-sm details"></div>
+        </div>
+    </div>
+</section>
+
+<h4 id="example-components">Components</h4>
+
+    <h5 id="example-components-basic">Registering &amp; Using</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+
+json2html.component.add('movie',{'<>':'li','text':'${title} ${year} (${rating})'});
+
+let data = [
+    {"title":"The Shawshank Redemption","year":"1994","rating":"9.2"},
+    {"title":"The Godfather","year":"1972","rating":"9.2"},
+    {"title":"The Godfather: Part II","year":"1974","rating":"9.0"},
+    {"title":"The Dark Knight ","year":"2008","rating":"9.0"},
+    {"title":"12 Angry Men","year":"1957","rating":"9.0"}
+];
+
+let template = {'<>':'ul','html':[
+                    {'[]':'movie','data':function(){
+                        return(this.movies);
+                    }}
+                ]};
+
+$("#movie-list").json2html({'movies':data},template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;ul&gt;
+    &lt;li&gt;The Shawshank Redemption 1994 (0.2)&lt;/li&gt;
+    &lt;li&gt;The Godfather 1972 (9.2)&lt;/li&gt;
+    &lt;li&gt;The Godfather: Part II 1974 (9.0)&lt;/li&gt;
+    &lt;li&gt;The Dark Knight 2008 (9.0)&lt;/li&gt;
+    &lt;li&gt;12 Angry Men 1957 (9.0)&lt;/li&gt;
+&lt;/ul&gt;
+</pre>        
+    </div>
+
+<!-- Node-->
+<section>
+    <h4 id="example-node">Node.js</h4>
+
+    <h5 id="example-node-require">Require</h5>
+    <div>
+        <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+const json2html = require('node-json2html');
+ 
+let template = {'<>':'div','text':'${name} (${age})'};
+    
+let data = [
+    {'name':'Bob','age':40},
+    {'name':'Frank','age':15},
+    {'name':'Bill','age':65},
+    {'name':'Robert','age':24}
+];
+    
+let html = json2html.render(data,template);
+</pre>
+        </div>
+<pre class="prettyprint">
+&lt;div&gt;Bob (40)&lt;/div&gt;
+&lt;div&gt;Frank (15)&lt;/div&gt;
+&lt;div&gt;Bill (65)&lt;/div&gt;
+&lt;div&gt;Robert (24)&lt;/div&gt;
+</pre>
+    </div>
+    
+</section>
+
+        </main>
+
+      </div>
+    </div>
+    
+    <footer class="bd-footer text-muted">
+        <div class="container-fluid p-3 p-md-5">
+            &copy; 2022 JSON2HTML
+        </div>
+    </footer>
+</body>
+
+<script>
+
+    var examples = {
+        
+        "event":{
+            "transform":{"<>":"div","class":"row","html":[
+                    {"<>":"div","class":"col-sm box ${colour}","text":"${click}","onclick":function(){
+                        $(this).css("visibility","hidden");
+                    }},
+                    {"<>":"div","class":"col-sm box ${colour}","text":"${dblclick}","ondblclick":function(){
+                        $(this).css("visibility","hidden");
+                    }}
+                ]},
+                
+            "data":[
+                {"click":"click me","dblclick":"dbl click me","colour":"red"},
+                {"click":"click me harder","dblclick":"dbl click me now","colour":"blue"}
+            ],
+            
+            "setup":function(){
+                $("#example-jquery-events-output").json2html(this.data,this.transform);
+            }
+        },
+        
+        "app":{
+            "transforms":{
+                "list":{"<>":"ul","html":function(){
+                    return($.json2html(examples.app.data,examples.app.transforms.items));   
+                }},
+                
+                "items":{"<>":"li","html":function(obj,index){
+                            return( (index+1) + ". " + obj.title);
+                        },"onclick":function(e){
+                    $("#example-jquery-app-output .details").empty().json2html(e.obj,examples.app.transforms.details);
+                }},
+                
+                "details":[
+                    {"<>":"div","html":[
+                        {"<>":"h5","text":"${title}"}
+                    ]},
+                    {"<>":"div","text":"Year: ${year}"},
+                    {"<>":"div","text":"Rating: ${rating}"},
+                ]
+            },
+                
+            "data":[
+                {"title":"The Shawshank Redemption","year":"1994","rating":"9.2"},
+                {"title":"The Godfather","year":"1972","rating":"9.2"},
+                {"title":"The Godfather: Part II","year":"1974","rating":"9.0"},
+                {"title":"The Dark Knight ","year":"2008","rating":"9.0"},
+                {"title":"12 Angry Men","year":"1957","rating":"9.0"}
+            ],
+            
+            "setup":function(){
+                $("#example-jquery-app-output .list").json2html({},this.transforms.list);
+            }
+        }
+    };
+    
+    $(function() {
+        // Activate scrollspy to add active class to navbar items on scroll
+        $('body').scrollspy({
+            target: '#bd-docs-nav',
+            offset: 90
+        });
+
+        //make code pretty
+        prettyPrint();
+        
+        //Setup the event example
+        examples.event.setup();
+        examples.app.setup();
+    });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28003704-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>json2html &bull; lightning fast HTML templating for native js, node.js &amp; jquery</title>
+    
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Meta -->
+    <meta name="description" content="JSON2HTML is a lightning fast client side javascript HTML templating library for native js, jQuery and Node.js.">
+    <meta name="author" content="Chad Brown">
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.0/json2html.min.js"></script>
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    
+    <link href="/js/prettify.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/prettify.js"></script>
+
+    <!-- Index CSS-->
+    <link href="/css/index.css" rel="stylesheet">
+    
+    <link href="/img/favicon.ico" rel="icon" type="image/ico">
+</head>
+
+<body>
+    <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="JSON2HTML">
+            <img src="/img/json2html-logo-white.png" style="width:36px;height:36px;"/>
+        </a>
+   
+        <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link active" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/started/">Get Started</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/docs/">Documentation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/examples/">Examples</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/builder/">Builder</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/visualizer/">Visualizer</a>
+              </li>
+            </ul>
+        </div>
+        
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <li class="nav-item">
+              <a class="nav-link p-2" href="https://github.com/moappi/json2html" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36" focusable="false"><title>GitHub</title><path d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+              </a>
+            </li>
+        </ul>
+        
+        <a class="btn btn-bd-yellow d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="https://github.com/moappi/json2html/archive/master.zip">Download</a>
+    </header>
+
+    <main class="bd-masthead" id="content" role="main">
+        <div class="container">
+            <div class="row align-items-center">
+              <div class="col-6 mx-auto col-md-6 order-md-2">
+                <img class="img-fluid mb-3 mb-md-0" src="/img/json2html-header.png" alt="" width="860" height="860">
+              </div>
+              <div class="col-md-6 order-md-1 text-center text-md-left pr-md-5">
+                <h1 class="mb-3 bd-text-green">json2html</h1>
+                
+                <p class="lead">
+                  json2html is an open source javascript library that uses js templates to render JSON objects into HTML.
+                </p>
+                
+                <p class="lead  mb-4">
+                  Build lightning fast, interactive client side templates using nothing but javascript.
+                </p>
+                
+                <p class="lead mb-4">
+                  Free to use under the MIT license.
+                </p>
+                <div class="d-flex flex-column flex-md-row lead mb-3">
+                  <a href="/started/" class="btn btn-lg btn-bd-green mb-3 mb-md-0 mr-md-3">Get Started</a>
+                  <a href="https://github.com/moappi/json2html/archive/master.zip" class="btn btn-lg btn-outline-secondary">Download</a>
+                </div>
+                <p class="text-muted mb-0">Currently v2.2.1</p>
+              </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Install -->
+    <div id="getstarted" class="masthead-followup row m-0 border border-white">
+        
+        <div class="col-12 col-md-6 p-3 p-md-5 bg-light border border-white">
+    
+            <svg xmlns="http://www.w3.org/2000/svg" focusable="false" width="32" height="32" fill="none" stroke="currentcolor" stroke-width="2" class="text-primary mb-2" viewBox="0 0 32 32" stroke-linecap="round" stroke-linejoin="round"><title>Download icon</title><path d="M9 22c-9 1-8-10 0-9C6 2 23 2 22 10c10-3 10 13 1 12m-12 4l5 4 5-4m-5-10v14"></path></svg>
+            
+            <h3>On the Browser</h3>
+            <p>Use on the browser with the json2html CDN.</p>
+            
+            <h5>Use Native Javascript or with JQuery</h5>
+            <div class="bd-clipboard"><button class="btn-clipboard" title="" data-original-title="Copy to clipboard">Copy</button></div>
+            <figure class="highlight">
+<pre><code class="language-html" data-lang="html">
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdnjs.cloudflare.com/ajax/libs/json2html/2.2.1/json2html.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre>
+            </figure>
+            <!-- Example -->
+            <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/2.2.1/json2html.min.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    let template = {'<>':'div','html':'${title} ${year}'};
+        
+    let data = [
+        {"title":"Heat","year":"1995"},
+        {"title":"Snatch","year":"2000"},
+        {"title":"Up","year":"2009"},
+        {"title":"Unforgiven","year":"1992"},
+        {"title":"Amadeus","year":"1984"}
+    ];
+    
+    //native javascript
+    document.write( json2html.render(data,template) );
+    
+    //or with jQuery
+    $("#result").json2html(data,template);
+    
+&lt;/script&gt;
+</pre>
+            </div>
+            
+            <hr class="half-rule">
+            
+            <a class="btn btn-outline-primary" href="/docs">Explore the docs</a>
+        </div>
+        
+        <div class="col-12 col-md-6 p-3 p-md-5 bg-light border border-white">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" focusable="false" width="32" height="32" fill="none" stroke="currentcolor" stroke-width="2" class="text-primary mb-2" viewBox="0 0 32 32" stroke-linecap="round" stroke-linejoin="round"><title>Import icon</title><path d="M28 22v8H4v-8M16 4v20m-8-8l8 8 8-8"></path></svg>
+            
+            <h3>On the Server</h3>
+            <p>Use on node.js with this npm package.</p>
+            
+            <div class="bd-clipboard"><button class="btn-clipboard" title="" data-original-title="Copy to clipboard">Copy</button></div>
+            <figure class="highlight"><pre><code class="language-sh" data-lang="sh">npm install node-json2html</code></pre></figure>
+            
+            <hr class="half-rule">
+
+            <!-- Example -->
+            <div class='docs-example'>
+<pre class="prettyprint noborder nobackground noshadow linenums">
+const json2html = require('node-json2html');
+
+let template = {'<>':'div','html':'${title} ${year}'};
+    
+let data = [
+    {"title":"Heat","year":"1995"},
+    {"title":"Snatch","year":"2000"},
+    {"title":"Up","year":"2009"},
+    {"title":"Unforgiven","year":"1992"},
+    {"title":"Amadeus","year":"1984"}
+];
+    
+let html = json2html.render(data,template);
+</pre>
+            </div>
+            
+            <hr class="half-rule">
+
+            <a class="btn btn-outline-primary" href="/docs">Explore the docs</a>
+        </div>
+    </div>
+    
+    <!-- Contact -->
+    <div style="text-align:center;padding-top: 50px;padding-bottom: 50px;">
+        <a class="btn btn-outline-success" href="http://stackoverflow.com/questions/ask?tags=json2html">Ask a Question</a>
+    </div>
+
+    <footer class="bd-footer text-muted">
+        <div class="container-fluid p-3 p-md-5">
+            &copy; 2022 JSON2HTML
+        </div>
+    </footer>
+</body>
+
+<script>
+    $(function() {
+        //make code pretty
+        prettyPrint();
+    });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28003704-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</html>
