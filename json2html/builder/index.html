@@ -7,10 +7,10 @@
     <title>json2html &bull; lightning fast HTML templating for node.js &amp; jquery</title>
     
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Base Styling-->
-    <link href="../css/index.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
     
     <!-- Meta -->
     <meta name="description" content="JSON2HTML is a lightning fast client side javascript HTML templating library for both jQuery and Node.js.">
@@ -18,17 +18,17 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.0/json2html.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2html/2.2.3/json2html.min.js"></script>
 
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.4/beautify-html.min.js"></script>
     
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,400,700">
 
-    <link href="../js/prettify.css" rel="stylesheet">
-    <script src="../js/prettify.js"></script>
+    <link href="/js/prettify.css" rel="stylesheet">
+    <script src="/js/prettify.js"></script>
     
     <style>
         textarea {
@@ -55,28 +55,28 @@
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
 
         <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="JSON2HTML">
-            <img src="../img/json2html-logo-white.png" style="width:36px;height:36px;"/>
+            <img src="/img/json2html-logo-white.png" style="width:36px;height:36px;"/>
         </a>
    
         <div class="navbar-nav-scroll">
             <ul class="navbar-nav bd-navbar-nav flex-row">
               <li class="nav-item">
-                <a class="nav-link" href="../">Home</a>
+                <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../started/">Get Started</a>
+                <a class="nav-link" href="/started/">Get Started</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../docs/">Documentation</a>
+                <a class="nav-link" href="/docs/">Documentation</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../examples/">Examples</a>
+                <a class="nav-link" href="/examples/">Examples</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="../builder/">Builder</a>
+                <a class="nav-link active" href="/builder/">Builder</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../visualizer/">Visualizer</a>
+                <a class="nav-link" href="/visualizer/">Visualizer</a>
               </li>
             </ul>
         </div>
@@ -138,12 +138,14 @@
     
     <footer class="bd-footer text-muted">
         <div class="container-fluid p-3 p-md-5">
-            &copy; 2022 JSON2HTML
+            &copy; 2024 JSON2HTML
         </div>
     </footer>
 </body>
 
 <script>
+
+    const parser = new DOMParser();
     
     var error = {
         "show":function(msg){
@@ -167,7 +169,7 @@
 	        $('#html-tab > textarea').empty();
 	        
 	        //Get the JSON object
-	        var json = $('#json-tab > textarea').val();
+	        let json = $('#json-tab > textarea').val();
 	        
 	        //Exit if we don't have any JSON
 	        if(!json.length) {
@@ -186,9 +188,9 @@
 	        //Determine if we have json to render
 	        if(json){
 
-	            var _error = false;
+	            let _error = false;
 	            
-	            var $obj = $('<div/>');
+	            let $obj = $('<div/>');
 	            
 	            try {
         	        //Set the html in the tab
@@ -216,7 +218,7 @@
 	        //hide the error message
 	        error.hide();
 	        
-	        var html = $('#html-tab > textarea').val();
+	        let html = $('#html-tab > textarea').val();
 
 	        if(!html.length) {
 	            $(this).tab('show');
@@ -224,10 +226,22 @@
 	        }
 	        
 	        //Set html output
-    		$('#html-output').html( html );
+    		//$('#html-output').html( html );
+    		let doc;
+    		
+    		try {
+                doc = parser.parseFromString(html, "text/html");
+            // do whatever you want with htmlDoc.getElementsByTagName('a');
+    		} catch(e) {
+    		    error.show(e.message);
+    		    return;
+    		}
+    		
+    		//Get the body of the document (where the html should reside)
+    		let $body = $(doc).find("body");
     		
     		//Process to JSON and format it for consumption
-    		$('#json-tab > textarea').val( formatJSON(toTransform($('#html-output').children())) );
+    		$('#json-tab > textarea').val( formatJSON(toTransform($body.children())) );
     		
     		//Switch to the tab 
     		$(this).tab('show');
@@ -241,25 +255,25 @@
     	//Create the html
     	if(!Array.isArray(json)) $html.append(obj2Template(json));
     	else {
-    	    for(var i=0; i < json.length; i++)
+    	    for(let i=0; i < json.length; i++)
     	        $html.append(obj2Template(json[i]));
     	} 
     }
     
-    //Convert json to template
+    //Convert json template to html
     function obj2Template(json) {
     	
     	//Make sure we have a tag object
-    	var tag = json['<>'] || json['tag'];
+    	let tag = json['<>'] || json['tag'];
     	if(!tag) throw "Missing required attribute <>";
     	
     	//Create element
-    	var $obj = $("<" + tag + "/>");
+    	let $obj = $("<" + tag + "/>");
     	
     	//Add the other attributes (except for the html)
-    	for(var prop in json){
+    	for(let prop in json){
     	    
-    	    var _prop = prop.toLowerCase();
+    	    let _prop = prop.toLowerCase();
     	    
     	    switch(_prop){
                 case '<>':
@@ -286,59 +300,68 @@
     //Convert obj or array to transform
     function toTransform(obj) {
     	
-    	var json;
+    	let json;
     	
-    	if( obj.length > 1 ) {
+    	if( obj.length === 1 ) json = obj2Transform($(obj));
+    	else {
     		json = [];
-    
-    		for(var i = 0; i < obj.length; i++)
-    			json[json.length++] = obj2Transform(obj[i]);
-    	} else json = obj2Transform(obj);
+    		
+    		for(let child of obj)
+    			json.push(obj2Transform($(child)));
+    	} 
     
     	return(json);
     }
     
     //Convert obj to transform
     function obj2Transform(obj) {
+        
     	//Get the DOM element
-    	var el = $(obj).get(0);
+    	let el = $(obj).get(0);
     
     	//Add the tag element
-    	var json = {'<>':el.nodeName.toLowerCase()};
+    	let json = {'<>':el.nodeName.toLowerCase()};
     
-    	for (var attr, i=0, attrs=el.attributes, l=attrs.length; i<l; i++){
+    	for (let attr, i=0, attrs=el.attributes, l=attrs.length; i<l; i++){
     		attr = attrs[i];
     		json[attr.nodeName] = escapeJSON(attr.value);
     	}
     	
-    	var children = $(obj).children();
+    	let children = $(obj).children();
     
     	if( children.length > 0 ) json['html'] = [];
-    	else json['html'] = escapeJSON($(obj).text());
+    	else {
+    	    //Get the text
+    	    let text = $(obj).text();
+    	    
+    	    //Make sure we have some text to use
+    	    if(text.length) json['text'] = escapeJSON(text).trim();
+    	}
     
     	//Add the children
-    	for(var c = 0; c < children.length; c++)
-    		json['html'][json['html'].length++] = toTransform(children[c]);
+    	for(let child of children)
+    		json['html'].push( obj2Transform(child) );
     
     	return(json);
     }
     
     //Format JSON (with indents)
     function formatJSON(oData, sIndent) {
-    	if (arguments.length < 2) {
-    		var sIndent = "";
-    	}
-    	var sIndentStyle = "  ";
-    	var sDataType = RealTypeOf(oData);
+        
+    	if (arguments.length < 2) sIndent = "";
+    	
+    	let sIndentStyle = "  ",
+    	    sDataType = RealTypeOf(oData),
+    	    sHTML;
     
     	// open object
     	if (sDataType == "array") {
     		if (oData.length == 0) {
     			return "[]";
     		}
-    		var sHTML = "[";
+    		sHTML = "[";
     	} else {
-    		var iCount = 0;
+    		let iCount = 0;
     		$.each(oData, function() {
     			iCount++;
     			return;
@@ -346,11 +369,11 @@
     		if (iCount == 0) { // object is empty
     			return "{}";
     		}
-    		var sHTML = "{";
+    		sHTML = "{";
     	}
     
     	// loop through items
-    	var iCount = 0;
+    	let iCount = 0;
     	$.each(oData, function(sKey, vValue) {
     		if (iCount > 0) {
     			sHTML += ",";
@@ -374,6 +397,8 @@
     			case "null":
     				sHTML += "null";
     				break;
+    			case "undefined":
+    			break;
     			case "string":
     				sHTML += ("\"" + escapeJSON(vValue) + "\"");
     				break;
@@ -398,18 +423,21 @@
     
     //Get the type of the obj (can replace by jquery type)
     function RealTypeOf(v) {
-      if (typeof(v) == "object") {
-    	if (v === null) return "null";
-    	if (v.constructor == (new Array).constructor) return "array";
-    	if (v.constructor == (new Date).constructor) return "date";
-    	if (v.constructor == (new RegExp).constructor) return "regex";
-    	return "object";
-      }
-      return typeof(v);
+        
+        if (v === undefined) return "undefined";
+      
+        if (typeof(v) !== "object") return typeof(v);
+      
+        if (v === null) return "null";
+        if (v.constructor == (new Array).constructor) return "array";
+        if (v.constructor == (new Date).constructor) return "date";
+        if (v.constructor == (new RegExp).constructor) return "regex";
+        return "object";
+      
     }
     
     function escapeJSON(str) {
-        return str.replace(/[\n\r]/g, "\\n")
+        return str.replace(/[\n\r]/g, "")
                    .replace(/\\'/g, "\\'")
                    .replace(/\\"/g, '\\"')
                    .replace(/\\&/g, "\\&")

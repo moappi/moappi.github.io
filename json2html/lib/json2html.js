@@ -1,5 +1,5 @@
 
-//     json2html.js 2.2.1
+//     json2html.js 2.2.2
 //     https://www.json2html.com
 //     (c) 2006-2022 Crystalline Technologies
 //     json2html may be freely distributed under the MIT license.
@@ -134,7 +134,7 @@
 	if(!root.json2html) root.json2html = {};
 	
 	//Current Version
-	root.json2html.version = "2.2.1";
+	root.json2html.version = "2.3.0";
 	
 	//Render a json2html template
 	//  obj : json object to render, or json string
@@ -255,8 +255,19 @@
 			.replace(/\//g, "&#x2F;");
 	};
 	
+	//Hydrate the elements with these events
+	root.json2html.hydrate = function(el,events) {
+		_onready( _attachEvents(el,events) );
+	};
+	
 	//DEPRECATED (use json2html.render instead)
 	root.json2html.transform = root.json2html.render;
+	
+	// Create the j2h-ready
+    var readyEvent = document.createEvent("Event");
+    
+    // Define that the event name is j2h-ready
+    readyEvent.initEvent("j2h-ready", false, false);
 
 	/* ---------------------------------------- jQuery Plugin ------------------------------------------------ */
 
@@ -275,9 +286,6 @@
                 //      data: object passed to jquery events
                 //      output : ihtml | html
 				$.json2html = function(obj, template, options) {
-					
-					//Make sure we have the json2html base loaded
-					if(typeof json2html === "undefined") return(undefined);
 					
 					//Default options
 					var _options = {
@@ -328,9 +336,6 @@
 				//      data: object passed to jquery events
 				$.fn.json2html = function(obj, template, options) {
 				    
-					//Make sure we have the json2html base loaded
-					if(typeof json2html === "undefined") return(undefined);
-					
 					var _options = {
 					    
 					    //Always set the output to ihtml
@@ -389,112 +394,175 @@
 					});
 				};
 				
-				//Hydrate the json2html elements with these events
+				//Hydrate the elements with these events
 				$.fn.j2hHydrate = function(events) {
 					
-					//Attach the events for each element
-					return this.each(function(){ 
-					    
-					    //Attach the events and trigger the onready for this element
-                        _onready( _attachEvents($(this),events) );
-					});
+					root.json2html.hydrate($(this),events);
 				};
-				
-				/* ---------------------------------------- Prviate Methods ------------------------------------------------ */
-				
-				//Trigger the on ready events
-				function _onready(events){
-				    
-					//Trigger all the json2html.ready events
-					for(var i=0; i < events.length; i++) 
-						events[i].trigger("j2h.ready");
-				}
-				
-				//Add the ihtml object to the dom
-				// returns the parent and ready event object
-				function _dom(ihtml) {
-				    
-					//Attach the html(string)
-					var parent = $(document.createElement("i")).html(ihtml.html);
-					
-					//Attach the events to the parent object in the dom
-					var ready = _attachEvents($(parent),ihtml.events);
-					
-					//Get the children to this result
-					return({"parent":$(parent).children(),"ready":ready});
-				}
-				
-				//Attach the events to the children of this element
-				function _attachEvents($parent,events) {
-					
-					//Record json2html specific ready events
-					var ready = [];
-					
-					//Check the $parent for all j2h events
-					$parent.find("[-j2h-e]").each(function(){
-                        
-                        //Get the events we should attach to this element
-                        var attach = $(this).attr("-j2h-e");
-                        
-                        //Make sure we have some events to attach
-                        if(attach) {
-                        
-                            //split by " " (can contain multiple events per element)
-                            var _events = attach.split(" ");
-                            
-                            //Add each event
-                            for(var i = 0; i < _events.length; i++) {
-                                
-                                var event = events[_events[i]];
-                                
-                                //Don't have this event then just skip
-                                if(!event) continue;
-                                
-                                //Add the action to the data object
-                                event.data.action = event.action;
-                                
-                                //Add to ready 
-                                switch(event.type) {
-                                    
-                                    //json2html specific event
-                                    case "ready":
-                                        
-                                        //Sepcify that we'll need to trigger these later
-                                        ready.push($(this));
-                                        
-                                        //rename the event to j2h.ready
-                                        event.type = "j2h.ready";
-                                    break;
-                                    
-                                    //All other jquery events
-                                    default:
-                                    break;
-                                }
-                                
-                                //otherwise attach the events to the element
-                                $(this).on(event.type,event.data,function(e){
-                                	
-                                	//attach the jquery event
-                                	e.data.event = e;
-                                	
-                                	//call the appropriate method
-                                	if(_typeof(e.data.action) === "function") e.data.action.call($(this),e.data);
-                                });
-                            }
-                        }
-                        
-                        //remove the event attribute
-						$(this).removeAttr("-j2h-e");
-					});
-					
-					//Return the ready events
-					return(ready);
-				}
 			})(window.jQuery);
 		}
+    
+    /* ---------------------------------------- Native Javascript Plugin -------------------------------------- */
+    
+    Element.prototype.json2html = function(obj, template, options) {
+        
+        var _options = {
+					    
+    	    //Always set the output to ihtml
+    	    "output":"ihtml",
+    	    
+    	    //Set the default method
+    	    "method":"append"
+    	};
+    	
+    	//Parse the user defined options
+    	if(options) {
+    	    
+            //Set the method
+            if(options.method) _options.method = options.method;
+            
+            //Add the other allowed options
+            _options.components = options.components;
+            _options.data = options.data;
+    	}
+        
+        //Render the template and attach to the dom
+		var dom = _dom(json2html.render(obj, template, _options));
 		
-	/* ---------------------------------------- Private Methods ------------------------------------------------ */
+		var method;
+		
+		//Determine how we should add the new content
+		switch(_options.method) {
+		    
+		    //Prepend
+		    case "prepend":
+		        method = "afterbegin";
+		    break;
+		    
+		    //Default to append
+		    default:
+		        method = "beforeend";
+		    break;
+		}
+		
+		//Insert the child nodes (Node List)
+		for (var i = 0; i < dom.parent.length; i++)
+            this.insertAdjacentElement(method,dom.parent[i]);
+		
+		//Throw the json2html.ready events (if any)
+		_onready(dom.ready);
+		
+		//For chaining
+		return(this);
+    };
+    
+	/* ---------------------------------------- Prviate Methods ------------------------------------------------ */
 	
+	//Trigger the elements with ready events
+	function _onready(el){
+	    
+		//Trigger all the json2html.ready events
+		for(var i=0; i < el.length; i++) 
+		    el[i].dispatchEvent(readyEvent);
+	}
+	
+	//Add the ihtml object to the dom
+	// returns the parent and ready event object
+	function _dom(ihtml) {
+	    
+		//Attach the html(string)
+		var parent = document.createElement("i");
+		parent.innerHTML = ihtml.html;
+		
+		//Attach the events to the parent object in the dom
+		var ready = _attachEvents(parent,ihtml.events);
+		
+		//Get the children to this result
+		return({"parent":parent.childNodes,"ready":ready});
+	}
+	
+	//Attach the events to the children of this element
+	function _attachEvents(parent,events) {
+		
+		//Record json2html specific ready events
+		var ready = [];
+		
+		//Check the $parent for all j2h events
+		
+		//Query all the events we need to attach
+		var all = parent.querySelectorAll("[-j2h-e]"); 
+		
+		//Attach each event
+		for(var i=0; i < all.length; i++) {
+		    
+		    var el = all[i];
+            
+            //Get the events we should attach to this element
+            var attach = el.getAttribute("-j2h-e");
+            
+            //Make sure we have some events to attach
+            if(attach) {
+                
+                //split by " " (can contain multiple events per element)
+                var _events = attach.split(" ");
+                
+                //Add each event
+                for(var i = 0; i < _events.length; i++) {
+                    
+                    var event = events[_events[i]];
+                    
+                    //Don't have this event then just skip
+                    if(!event) continue;
+                    
+                    //Add the action to the data object
+                    event.data.action = event.action;
+                    
+                    //Add to ready 
+                    switch(event.type) {
+                        
+                        //json2html specific event
+                        case "ready":
+                            
+                            //Sepcify that we'll need to trigger these later
+                            ready.push(el);
+                            
+                            //rename the event to j2h-ready
+                            event.type = "j2h-ready";
+                        break;
+                        
+                        //All other jquery events
+                        default:
+                        break;
+                    }
+                    
+                    //Add the data to the element
+                    // make sure it's for this event
+                    if(!el.data) el.data = {};
+                    el.data[event.type] = event.data;
+                    
+                    //Attach the events to the element
+                    el.addEventListener(event.type,function(e){
+                        
+                        //Disable j2h-ready events from being propagated
+                        if(e.type === "j2h-ready") e.stopPropagation();
+                        
+                    	//attach the jquery event
+                    	e.currentTarget.data[e.type].event = e;
+                    	
+                    	//call the appropriate method
+                    	if(_typeof(e.currentTarget.data[e.type].action) === "function") e.currentTarget.data[e.type].action.call(e.currentTarget,e.currentTarget.data[e.type]);
+                    });
+                }
+            }
+            
+            //remove the event attribute
+			el.removeAttribute("-j2h-e");
+		}
+		
+		//Return the ready events
+		return(ready);
+	}
+		
     //Render these object(s) using these temlpate(s)
 	function _render(obj, template, options, index, pobj) {
 
@@ -845,7 +913,7 @@
     function _parse(str, method) {	
     	
     	let tokenizer = new Tokenizer([
-    		/\${([\w\.\,\$]+)}/  
+    		/\${([\w\.\,\$\s]+)}/  
     	 ],function( src, real, re ){
     		return real ? src.replace(re,method) : src;
     	  }
